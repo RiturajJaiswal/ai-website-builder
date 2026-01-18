@@ -1,103 +1,230 @@
+// Application State
+let currentUser = localStorage.getItem('aether_user') || null;
+let apiKey = localStorage.getItem('aether_api_key') || null;
+let currentView = 'preview';
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    // Check if user is already logged in
+    if (currentUser) {
+        showMainApp(currentUser);
+        const loginScreen = document.getElementById('loginScreen');
+        if (loginScreen) {
+            loginScreen.style.display = 'none';
+        } 
+        
+        // Auto-populate API key if it exists
+        const apiInput = document.getElementById('apiKeyInput');
+        if (apiKey && apiInput) {
+           apiInput.value = apiKey; 
+        }
+    }
+    
+    // Initialize Icons
+    if (window.lucide) lucide.createIcons();
+});
+
 function handleLogin() {
-    const username = document.getElementById('usernameInput').value.trim();
+    const usernameInput = document.getElementById('usernameInput');
+    const username = usernameInput.value.trim();
     if (!username) return;
     
-    // Hide login, show app
+    // Save User
+    currentUser = username;
+    localStorage.setItem('aether_user', username);
+
+    // Transition
     const loginScreen = document.getElementById('loginScreen');
-    const mainApp = document.getElementById('mainApp');
-    
     loginScreen.style.opacity = '0';
+    
     setTimeout(() => {
         loginScreen.style.display = 'none';
-        mainApp.classList.remove('hidden');
+        showMainApp(username);
     }, 500);
 }
 
-// Check for Enter key on login
-document.getElementById('usernameInput').addEventListener('keypress', function (e) {
-    if (e.key === 'Enter') handleLogin();
-});
+function showMainApp(username) {
+    const mainApp = document.getElementById('mainApp');
+    mainApp.classList.remove('hidden');
+    
+    // Update Greeting
+    const nameDisplay = document.getElementById('userNameDisplay');
+    const avatar = document.getElementById('userAvatar');
+    
+    if (nameDisplay) nameDisplay.textContent = username;
+    if (avatar) avatar.textContent = username.charAt(0).toUpperCase();
+}
 
-function generateWebsite() {
+// Settings Handling
+function toggleSettings() {
+    const modal = document.getElementById('settingsModal');
+    modal.classList.toggle('hidden');
+}
+
+function saveApiKey() {
+    const key = document.getElementById('apiKeyInput').value.trim();
+    if (key) {
+        apiKey = key;
+        localStorage.setItem('aether_api_key', key);
+        alert('API Key saved securely!');
+        toggleSettings();
+    }
+}
+
+// Check for Enter key on login
+const usernameInput = document.getElementById('usernameInput');
+if (usernameInput) {
+    usernameInput.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') handleLogin();
+    });
+}
+
+async function generateWebsite() {
     const promptInput = document.getElementById('userPrompt');
     const prompt = promptInput.value.trim();
+    if (!prompt) return;
+
+    // UI Elements
     const btn = document.getElementById('generateBtn');
     const btnText = document.getElementById('btnText');
     const previewContainer = document.getElementById('previewContainer');
     const iframe = document.getElementById('previewFrame');
     const codeArea = document.getElementById('codeArea');
 
-    if (!prompt) return;
-
     // Loading State
     btn.disabled = true;
+    const originalText = btnText.textContent;
     btnText.textContent = "Dreaming...";
     
-    // Simulate AI Delay
-    setTimeout(() => {
-        // Reset Button
-        btn.disabled = false;
-        btnText.textContent = "Generate";
+    // Show Preview Container immediately to indicate activity
+    previewContainer.classList.remove('hidden');
+    if (window.innerWidth < 768) {
+        previewContainer.scrollIntoView({ behavior: 'smooth' });
+    }
 
-        // Generate Content based on keywords
-        const safePrompt = prompt.toLowerCase();
-        
-        // Theme Colors
-        let theme = {
-            bg: "bg-white",
-            text: "text-gray-900",
-            primary: "bg-blue-600 hover:bg-blue-700",
-            secondary: "bg-gray-100 hover:bg-gray-200 text-gray-900",
-            iconColor: "text-blue-500",
-            accentGradient: "from-blue-400 to-purple-600",
-            heroImage: "https://images.unsplash.com/photo-1497215728101-856f4ea42174?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80"
-        };
+    try {
+        let htmlContent = '';
 
-        if (safePrompt.includes("dark")) {
-            theme.bg = "bg-slate-900";
-            theme.text = "text-white";
-            theme.primary = "bg-indigo-600 hover:bg-indigo-700";
-            theme.secondary = "bg-white/10 hover:bg-white/20 text-white";
-            theme.iconColor = "text-indigo-400";
-            theme.accentGradient = "from-indigo-400 to-cyan-400";
-        } else if (safePrompt.includes("coffee") || safePrompt.includes("cafe")) {
-            theme.bg = "bg-[#1c1917]";
-            theme.text = "text-[#e7e5e4]";
-            theme.primary = "bg-[#d97706] hover:bg-[#b45309]";
-            theme.secondary = "bg-[#292524] hover:bg-[#44403c] text-[#d6d3d1]";
-            theme.iconColor = "text-orange-500";
-            theme.accentGradient = "from-orange-400 to-amber-600";
-            theme.heroImage = "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80";
-        } else if (safePrompt.includes("nature") || safePrompt.includes("green") || safePrompt.includes("species") || safePrompt.includes("animal")) {
-            theme.bg = "bg-emerald-950";
-            theme.text = "text-emerald-50";
-            theme.primary = "bg-emerald-500 hover:bg-emerald-600";
-            theme.secondary = "bg-emerald-900/50 hover:bg-emerald-900/70 text-emerald-100";
-            theme.iconColor = "text-emerald-400";
-            theme.accentGradient = "from-emerald-400 to-teal-500";
-            theme.heroImage = "https://images.unsplash.com/photo-1500485035595-cbe6f645feb1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80";
-        } else if (safePrompt.includes("future") || safePrompt.includes("tech") || safePrompt.includes("cyber")) {
-            theme.bg = "bg-black";
-            theme.text = "text-white";
-            theme.primary = "bg-fuchsia-600 hover:bg-fuchsia-700";
-            theme.secondary = "bg-gray-900 border border-gray-800 hover:bg-gray-800";
-            theme.iconColor = "text-fuchsia-500";
-            theme.accentGradient = "from-fuchsia-500 to-cyan-500";
-             theme.heroImage = "https://images.unsplash.com/photo-1535378437327-b7107a770652?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80";
+        if (apiKey && apiKey.startsWith('sk-')) {
+            // --- REAL AI GENERATION PATH ---
+            try {
+                const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${apiKey}`
+                    },
+                    body: JSON.stringify({
+                        model: "gpt-3.5-turbo",
+                        messages: [
+                            {
+                                role: "system", 
+                                content: "You are an expert web developer. Create a single-file HTML website with embedded CSS (using Tailwind CDN) and JS based on the user's description. The design must be modern, highly visual, and responsive. Return ONLY the raw HTML code. Do NOT wrap it in markdown backticks. Do NOT add explanations."
+                            },
+                            {
+                                role: "user",
+                                content: prompt
+                            }
+                        ]
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error.message);
+                }
+
+                htmlContent = data.choices[0].message.content;
+                
+                // Cleanup potentially returned markdown
+                htmlContent = htmlContent.replace(/```html/g, '').replace(/```/g, '');
+
+            } catch (err) {
+                console.error("API Error", err);
+                alert(`API Error: ${err.message}. Falling back to simulation engine.`);
+                htmlContent = generateSimulationTemplate(prompt);
+            }
+
+        } else {
+            // --- SIMULATION PATH (Fallback) ---
+            // Artificial Delay for realism
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            htmlContent = generateSimulationTemplate(prompt);
         }
 
-        // Production Grade Template (Tailwind + FontAwesome + Animation)
-        const htmlContent = `<!DOCTYPE html>
+        // Update UI
+        iframe.srcdoc = htmlContent;
+        codeArea.value = htmlContent;
+        
+        // Ensure correct view is visible
+        switchView(currentView);
+
+    } catch (error) {
+        console.error(error);
+        alert('An unexpected error occurred. Please try again.');
+    } finally {
+        // Reset Button
+        btn.disabled = false;
+        btnText.textContent = originalText;
+    }
+}
+
+function generateSimulationTemplate(prompt) {
+    const safePrompt = prompt.toLowerCase();
+    
+    // Theme Colors
+    let theme = {
+        bg: "bg-white",
+        text: "text-gray-900",
+        primary: "bg-blue-600 hover:bg-blue-700",
+        secondary: "bg-gray-100 hover:bg-gray-200 text-gray-900",
+        iconColor: "text-blue-500",
+        accentGradient: "from-blue-400 to-purple-600",
+        heroImage: "https://images.unsplash.com/photo-1497215728101-856f4ea42174?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80"
+    };
+
+    if (safePrompt.includes("dark")) {
+        theme.bg = "bg-slate-900";
+        theme.text = "text-white";
+        theme.primary = "bg-indigo-600 hover:bg-indigo-700";
+        theme.secondary = "bg-white/10 hover:bg-white/20 text-white";
+        theme.iconColor = "text-indigo-400";
+        theme.accentGradient = "from-indigo-400 to-cyan-400";
+    } else if (safePrompt.includes("coffee") || safePrompt.includes("cafe")) {
+        theme.bg = "bg-[#1c1917]";
+        theme.text = "text-[#e7e5e4]";
+        theme.primary = "bg-[#d97706] hover:bg-[#b45309]";
+        theme.secondary = "bg-[#292524] hover:bg-[#44403c] text-[#d6d3d1]";
+        theme.iconColor = "text-orange-500";
+        theme.accentGradient = "from-orange-400 to-amber-600";
+        theme.heroImage = "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80";
+    } else if (safePrompt.includes("nature") || safePrompt.includes("green") || safePrompt.includes("species") || safePrompt.includes("animal")) {
+        theme.bg = "bg-emerald-950";
+        theme.text = "text-emerald-50";
+        theme.primary = "bg-emerald-500 hover:bg-emerald-600";
+        theme.secondary = "bg-emerald-900/50 hover:bg-emerald-900/70 text-emerald-100";
+        theme.iconColor = "text-emerald-400";
+        theme.accentGradient = "from-emerald-400 to-teal-500";
+        theme.heroImage = "https://images.unsplash.com/photo-1500485035595-cbe6f645feb1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80";
+    } else if (safePrompt.includes("future") || safePrompt.includes("tech") || safePrompt.includes("cyber")) {
+        theme.bg = "bg-black";
+        theme.text = "text-white";
+        theme.primary = "bg-fuchsia-600 hover:bg-fuchsia-700";
+        theme.secondary = "bg-gray-900 border border-gray-800 hover:bg-gray-800";
+        theme.iconColor = "text-fuchsia-500";
+        theme.accentGradient = "from-fuchsia-500 to-cyan-500";
+        theme.heroImage = "https://images.unsplash.com/photo-1535378437327-b7107a770652?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80";
+    }
+
+    return `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generated Website</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
@@ -110,9 +237,7 @@ function generateWebsite() {
         ${safePrompt.includes("future") ? ".cyber-grid { background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px); background-size: 50px 50px; }" : ""}
     </style>
 </head>
-<body class="${theme.bg} ${theme.text} antialiased selection:bg-blue-500 selection:text-white ${safePrompt.includes("future") ? "cyber-grid" : ""}">
-    
-    <!-- Navbar -->
+<body class="${theme.bg} ${theme.text} antialiased ${safePrompt.includes("future") ? "cyber-grid" : ""}">
     <nav class="fixed w-full z-50 glass-nav transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
@@ -131,22 +256,16 @@ function generateWebsite() {
                     </div>
                 </div>
                 <div>
-                   <button class="${theme.primary} text-white px-6 py-2.5 rounded-full text-sm font-bold transition-all hover:scale-105 shadow-lg shadow-blue-500/25">
-                    Get Started
-                   </button>
+                   <button class="${theme.primary} text-white px-6 py-2.5 rounded-full text-sm font-bold transition-all hover:scale-105 shadow-lg shadow-blue-500/25">Get Started</button>
                 </div>
             </div>
         </div>
     </nav>
-
-    <!-- Hero Section -->
     <div class="relative min-h-screen flex items-center pt-20 overflow-hidden">
-        <!-- Background Image overlay -->
         <div class="absolute inset-0 z-0">
             <img src="${theme.heroImage}" class="w-full h-full object-cover opacity-20" alt="Background">
             <div class="absolute inset-0 bg-gradient-to-b from-transparent to-${theme.bg.replace("bg-", "")}"></div>
         </div>
-
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
             <div class="grid lg:grid-cols-2 gap-12 items-center">
                 <div class="text-left">
@@ -154,27 +273,18 @@ function generateWebsite() {
                         <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
                         AI-Powered Platform
                     </div>
-
                     <h1 class="text-5xl md:text-7xl font-bold tracking-tight mb-8 fade-in-up delay-100 leading-[1.1]">
                         <span class="block">Imagine.</span>
                         <span class="text-transparent bg-clip-text bg-gradient-to-r ${theme.accentGradient}">Create. Inspire.</span>
                     </h1>
-                    
-                    <p class="mt-6 text-xl opacity-80 max-w-lg fade-in-up delay-200 leading-relaxed">
-                        ${prompt}
-                    </p>
-
+                    <p class="mt-6 text-xl opacity-80 max-w-lg fade-in-up delay-200 leading-relaxed">${prompt}</p>
                     <div class="mt-10 flex flex-col sm:flex-row gap-4 fade-in-up delay-300">
                         <button class="${theme.primary} text-white px-8 py-4 rounded-xl text-lg font-bold flex items-center justify-center gap-2 transition-all hover:scale-105 shadow-xl">
                             Start Journey <i class="fa-solid fa-arrow-right"></i>
                         </button>
-                        <button class="${theme.secondary} px-8 py-4 rounded-xl text-lg font-bold flex items-center justify-center gap-2 transition-all hover:scale-105 backdrop-blur-md border border-white/10">
-                            View Demo
-                        </button>
+                        <button class="${theme.secondary} px-8 py-4 rounded-xl text-lg font-bold flex items-center justify-center gap-2 transition-all hover:scale-105 backdrop-blur-md border border-white/10">View Demo</button>
                     </div>
                 </div>
-
-                <!-- Abstract Visual -->
                 <div class="relative fade-in-up delay-300 hidden lg:block">
                     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-r ${theme.accentGradient} rounded-full blur-[100px] opacity-30 animate-pulse"></div>
                     <div class="relative bg-white/5 border border-white/10 backdrop-blur-xl rounded-2xl p-8 shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500">
@@ -197,32 +307,16 @@ function generateWebsite() {
             </div>
         </div>
     </div>
-
-    <!-- Stats Section -->
     <div class="relative py-20 border-t border-white/5 bg-white/5 backdrop-blur-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                <div>
-                    <div class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r ${theme.accentGradient}">100+</div>
-                    <div class="text-sm font-medium opacity-60 mt-2">Projects Launched</div>
-                </div>
-                <div>
-                   <div class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r ${theme.accentGradient}">50k</div>
-                    <div class="text-sm font-medium opacity-60 mt-2">Community Members</div>
-                </div>
-                 <div>
-                    <div class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r ${theme.accentGradient}">99.9%</div>
-                    <div class="text-sm font-medium opacity-60 mt-2">Uptime Guarantee</div>
-                </div>
-                 <div>
-                    <div class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r ${theme.accentGradient}">24/7</div>
-                    <div class="text-sm font-medium opacity-60 mt-2">Global Support</div>
-                </div>
+                <div><div class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r ${theme.accentGradient}">100+</div><div class="text-sm font-medium opacity-60 mt-2">Projects</div></div>
+                <div><div class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r ${theme.accentGradient}">50k</div><div class="text-sm font-medium opacity-60 mt-2">Members</div></div>
+                <div><div class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r ${theme.accentGradient}">99.9%</div><div class="text-sm font-medium opacity-60 mt-2">Uptime</div></div>
+                <div><div class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r ${theme.accentGradient}">24/7</div><div class="text-sm font-medium opacity-60 mt-2">Support</div></div>
             </div>
         </div>
     </div>
-
-    <!-- Features Grid -->
     <div class="py-24 relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
@@ -260,29 +354,9 @@ function generateWebsite() {
             </div>
         </div>
     </div>
-    
-    <footer class="py-12 border-t border-white/10 text-center opacity-60 text-sm">
-        <p>&copy; 2024 Generated with Aether AI. All rights reserved.</p>
-    </footer>
-
+    <footer class="py-12 border-t border-white/10 text-center opacity-60 text-sm"><p>&copy; 2024 Generated with Aether AI. All rights reserved.</p></footer>
 </body>
 </html>`;
-
-        // Inject content into iframe
-        iframe.srcdoc = htmlContent;
-        
-        // Inject content into code area
-        codeArea.value = htmlContent;
-        
-        // Show Preview
-        previewContainer.classList.remove('hidden');
-
-        // Scroll to preview on mobile
-        if (window.innerWidth < 768) {
-            previewContainer.scrollIntoView({ behavior: 'smooth' });
-        }
-
-    }, 2000);
 }
 
 function switchView(view) {
@@ -290,6 +364,9 @@ function switchView(view) {
     const codeView = document.getElementById('codeView');
     const bnts = document.querySelectorAll('.view-btn');
     
+    // Update state
+    currentView = view;
+
     bnts.forEach(btn => btn.classList.remove('active'));
 
     if (view === 'preview') {
@@ -304,9 +381,12 @@ function switchView(view) {
 }
 
 // Allow Enter key to submit
-document.getElementById('userPrompt').addEventListener('keypress', function (e) {
-    if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        generateWebsite();
-    }
-});
+const userPrompt = document.getElementById('userPrompt');
+if (userPrompt) {
+    userPrompt.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            generateWebsite();
+        }
+    });
+}

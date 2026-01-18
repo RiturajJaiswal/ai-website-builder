@@ -35,7 +35,35 @@
         </div>
     </div>
 
+    <!-- API Key Modal -->
+    <div id="settingsModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i data-lucide="settings"></i> Configuration</h2>
+                <button onclick="toggleSettings()" class="close-btn"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body">
+                <p>To generate <strong>custom</strong> websites instead of using templates, enter your OpenAI API Key below.</p>
+                <div class="input-group">
+                    <input type="password" id="apiKeyInput" placeholder="sk-..." autocomplete="off">
+                    <button onclick="saveApiKey()">Save Key</button>
+                </div>
+                <p class="disclaimer">The key is stored locally in your browser. We never see it.</p>
+            </div>
+        </div>
+    </div>
+
     <main class="container hidden" id="mainApp">
+        <nav class="app-nav">
+            <div class="user-greeting">
+                <span class="avatar" id="userAvatar">U</span>
+                <span id="userNameDisplay">User</span>
+            </div>
+            <button onclick="toggleSettings()" class="settings-btn" title="Settings">
+                <i data-lucide="settings"></i>
+            </button>
+        </nav>
+
         <div class="header fade-in">
             <div class="badge">
                 <i data-lucide="sparkles"></i>
