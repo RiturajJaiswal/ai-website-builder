@@ -14,7 +14,28 @@
         <div class="orb orb-2"></div>
     </div>
 
-    <main class="container">
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-card fade-in">
+            <div class="badge">
+                <i data-lucide="lock"></i>
+                <span>Secure Access</span>
+            </div>
+            <h1>Welcome to <br> <span class="gradient-text">Aether AI</span></h1>
+            <p class="subtitle">Enter your username to access the intelligent web engine.</p>
+            
+            <div class="input-group">
+                <input type="text" id="usernameInput" placeholder="Enter your username" autocomplete="off">
+                <button onclick="handleLogin()">
+                    <span>Enter</span>
+                    <i data-lucide="arrow-right"></i>
+                </button>
+            </div>
+            <p class="disclaimer">No email required. Your privacy is our priority.</p>
+        </div>
+    </div>
+
+    <main class="container hidden" id="mainApp">
         <div class="header fade-in">
             <div class="badge">
                 <i data-lucide="sparkles"></i>
