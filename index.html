@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Website Builder</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Load Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="background-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+
+    <main class="container">
+        <div class="header fade-in">
+            <div class="badge">
+                <i data-lucide="sparkles"></i>
+                <span>AI-Powered Website Builder</span>
+            </div>
+            <h1>Describe it. <br> <span class="gradient-text">Build it.</span></h1>
+            <p class="subtitle">Transform your ideas into reality with our intelligent engine. Just type what you want, and watch the magic happen.</p>
+        </div>
+
+        <div class="input-card fade-in-delay">
+            <textarea id="userPrompt" placeholder="e.g., A landing page for a coffee shop with a minimal dark theme..."></textarea>
+            <div class="card-footer">
+                <span class="hint">Press Enter to generate</span>
+                <button id="generateBtn" onclick="generateWebsite()">
+                    <i data-lucide="code-2" id="btnIcon"></i>
+                    <span id="btnText">Generate</span>
+                    <i data-lucide="arrow-right" class="arrow"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="previewContainer" class="preview-container hidden">
+            <div class="preview-header">
+                <div class="dots">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                </div>
+                <span class="preview-title">preview.html</span>
+            </div>
+            <iframe id="previewFrame" title="Website Preview"></iframe>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
