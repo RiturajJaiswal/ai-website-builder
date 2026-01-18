@@ -43,10 +43,22 @@
                     <div class="dot yellow"></div>
                     <div class="dot green"></div>
                 </div>
-                <span class="preview-title">preview.html</span>
+                <div class="header-controls">
+                    <button class="view-btn active" onclick="switchView('preview')">Preview</button>
+                    <button class="view-btn" onclick="switchView('code')">Code</button>
+                </div>
             </div>
-            <iframe id="previewFrame" title="Website Preview"></iframe>
+            <div class="content-wrapper">
+                <iframe id="previewFrame" title="Website Preview"></iframe>
+                <div id="codeView" class="hidden">
+                    <textarea id="codeArea" readonly></textarea>
+                </div>
+            </div>
         </div>
+        
+        <footer class="fade-in-delay-2">
+            <p>Created by <a href="https://github.com/RiturajJaiswal" target="_blank" class="creator-link">Rituraj Jaiswal</a></p>
+        </footer>
     </main>
 
     <script src="script.js"></script>

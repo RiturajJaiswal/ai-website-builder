@@ -214,36 +214,93 @@ button svg {
     padding: 0.75rem 1rem;
     display: flex;
     align-items: center;
-    gap: 1rem;
+    justify-content: space-between;
     border-bottom: 1px solid #e2e8f0;
 }
 
-.dots {
+.header-controls {
     display: flex;
-    gap: 0.375rem;
+    gap: 4px;
+    background: #e2e8f0;
+    padding: 2px;
+    border-radius: 6px;
 }
 
-.dot {
-    width: 0.75rem;
-    height: 0.75rem;
-    border-radius: 50%;
+.view-btn {
+    background: transparent;
+    color: #64748b;
+    border: none;
+    padding: 4px 12px;
+    font-size: 0.75rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
 }
 
-.red { background: #ef4444; }
-.yellow { background: #eab308; }
-.green { background: #22c55e; }
+.view-btn.active {
+    background: white;
+    color: #0f172a;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
 
-.preview-title {
-    color: #94a3b8;
-    font-family: monospace;
-    font-size: 0.875rem;
+.content-wrapper {
+    position: relative;
+    width: 100%;
+    height: 600px; /* Taller preview */
+    background: #1e293b; 
 }
 
 iframe {
     width: 100%;
-    height: 400px;
+    height: 100%;
     border: none;
     background: white;
+}
+
+#codeView {
+    width: 100%;
+    height: 100%;
+}
+
+#codeArea {
+    width: 100%;
+    height: 100%;
+    background: #1e293b;
+    color: #a5b4fc;
+    border: none;
+    padding: 1.5rem;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 0.875rem;
+    resize: none;
+    outline: none;
+    line-height: 1.5;
+}
+
+/* Footer Styling */
+footer {
+    margin-top: 3rem;
+    text-align: center;
+    color: #64748b;
+    font-size: 0.875rem;
+}
+
+.creator-link {
+    color: #bfdbfe;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+    border-bottom: 1px dashed rgba(191, 219, 254, 0.3);
+}
+
+.creator-link:hover {
+    color: white;
+    border-bottom-style: solid;
+}
+
+.fade-in-delay-2 {
+    animation: fadeIn 0.8s ease-out 0.4s forwards;
+    opacity: 0;
+    transform: translateY(20px);
 }
 
 /* Animations */
