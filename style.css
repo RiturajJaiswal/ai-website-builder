@@ -104,7 +104,9 @@ h1 {
 .gradient-text {
     background: linear-gradient(to right, #ffffff, #bfdbfe);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
+    color: transparent;
 }
 
 .subtitle {
