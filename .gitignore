@@ -12,6 +12,12 @@
 /.next/
 /out/
 
+# copilot
+.github/
+
+# vscode
+.vscode/
+
 # production
 /build
 
