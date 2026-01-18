@@ -1,6 +1,7 @@
 // Application State
 let currentUser = localStorage.getItem('aether_user') || null;
-let apiKey = localStorage.getItem('aether_api_key') || null;
+// ENTER YOUR API KEY HERE (OpenAI 'sk-...' or Groq 'gsk_...')
+const API_KEY = "YOUR_API_KEY_HERE"; 
 let currentView = 'preview';
 
 // Initialize
@@ -12,12 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (loginScreen) {
             loginScreen.style.display = 'none';
         } 
-        
-        // Auto-populate API key if it exists
-        const apiInput = document.getElementById('apiKeyInput');
-        if (apiKey && apiInput) {
-           apiInput.value = apiKey; 
-        }
     }
     
     // Initialize Icons
@@ -55,22 +50,6 @@ function showMainApp(username) {
     if (avatar) avatar.textContent = username.charAt(0).toUpperCase();
 }
 
-// Settings Handling
-function toggleSettings() {
-    const modal = document.getElementById('settingsModal');
-    modal.classList.toggle('hidden');
-}
-
-function saveApiKey() {
-    const key = document.getElementById('apiKeyInput').value.trim();
-    if (key) {
-        apiKey = key;
-        localStorage.setItem('aether_api_key', key);
-        alert('API Key saved securely!');
-        toggleSettings();
-    }
-}
-
 // Check for Enter key on login
 const usernameInput = document.getElementById('usernameInput');
 if (usernameInput) {
@@ -105,30 +84,37 @@ async function generateWebsite() {
     try {
         let htmlContent = '';
 
-        if (apiKey && apiKey.startsWith('sk-')) {
-            // --- REAL AI GENERATION PATH ---
+        if (apiKey && (apiKey.startsWith('sk-') || apiKey.startsWith('gsk_'))) {
+            // --- REAL AI GENERATION PATH (OpenAI & Groq) ---
             try {
-                const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                const isGroq = apiKey.startsWith('gsk_');
+                const apiEndpoint = isGroq 
+                    ? 'https://api.groq.com/openai/v1/chat/completions' 
+                    : 'https://api.openai.com/v1/chat/completions';
+                
+                const model = isGroq ? 'llama3-70b-8192' : 'gpt-3.5-turbo';
+
+                const response = await fetch(apiEndpoint, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${apiKey}`
                     },
-                    body: JSON.stringify({
-                        model: "gpt-3.5-turbo",
-                        messages: [
-                            {
-                                role: "system", 
-                                content: "You are an expert web developer. Create a single-file HTML website with embedded CSS (using Tailwind CDN) and JS based on the user's description. The design must be modern, highly visual, and responsive. Return ONLY the raw HTML code. Do NOT wrap it in markdown backticks. Do NOT add explanations."
-                            },
-                            {
-                                role: "user",
-                                content: prompt
-                            }
-                        ]
-                    })
-                });
+            API_KEY && (API_KEY.startsWith('sk-') || API_KEY.startsWith('gsk_'))) {
+            // --- REAL AI GENERATION PATH (OpenAI & Groq) ---
+            try {
+                const isGroq = API_KEY.startsWith('gsk_');
+                const apiEndpoint = isGroq 
+                    ? 'https://api.groq.com/openai/v1/chat/completions' 
+                    : 'https://api.openai.com/v1/chat/completions';
+                
+                const model = isGroq ? 'llama3-70b-8192' : 'gpt-3.5-turbo';
 
+                const response = await fetch(apiEndpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${API_KEY
                 const data = await response.json();
                 
                 if (data.error) {

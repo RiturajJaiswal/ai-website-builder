@@ -235,6 +235,21 @@ body {
     margin: 0;
 }
 
+.description-text {
+    font-size: 0.9rem;
+    color: #94a3b8;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+
+.description-text code {
+    background: rgba(255,255,255,0.1);
+    padding: 0.1rem 0.3rem;
+    border-radius: 4px;
+    font-family: monospace;
+    color: #e2e8f0;
+}
+
 .close-btn {
     background: none;
     border: none;
