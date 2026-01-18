@@ -1,29 +1,28 @@
-# AI Website Builder
+# Aether AI
 
-A Next.js application that generates website layouts based on user prompts using AI.
+Aether AI is an intelligent website generator that transforms simple text descriptions into beautiful, operational website layouts instantly.
 
 ## Features
 
-- **AI-Powered Generation**: Describe your website, and see it built instantly.
-- **Visuals**: Soothing animations and gradients powered by Framer Motion.
-- **Modern Stack**: Next.js 14, TypeScript, Tailwind CSS.
+-   **Dream-to-Reality Engine**: Type what you want, and Aether builds it.
+-   **Soothing Interface**: A calm, focused environment with ambient "Aurora" visuals.
+-   **Instant Preview**: See your generated code render in real-time.
+-   **Lightweight**: Built with pure HTML, CSS, and JavaScript. No frameworks, no build steps.
 
-## Getting Started
+## How to Use
 
-1.  **Install Dependencies**:
-    ```bash
-    npm install
-    ```
-
-2.  **Run the Development Server**:
-    ```bash
-    npm run dev
-    ```
-
-3.  Open [http://localhost:3000](http://localhost:3000) with your browser.
+1.  **Open the App**: 
+    Just double-click `index.html` on your computer, or visit the [Live Deployment](https://RiturajJaiswal.github.io/ai-website-builder/).
+    
+2.  **Describe Your Vision**:
+    Enter a prompt like:
+     _"A landing page for a coffee shop with a minimal dark theme"_
+    
+3.  **Generate**:
+    Click "Generate" and watch your site appear.
 
 ## Project Structure
 
-- `src/app/page.tsx`: Main UI component.
-- `src/app/globals.css`: Global styles and themes.
-- `tailwind.config.ts`: Configuration for Tailwind CSS.
+-   `index.html`: The main interface.
+-   `style.css`: Styling and animations.
+-   `script.js`: The "AI" logic and interaction handler.
