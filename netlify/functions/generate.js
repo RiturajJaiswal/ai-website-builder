@@ -20,8 +20,8 @@ exports.handler = async function(event, context) {
             ? 'https://api.groq.com/openai/v1/chat/completions' 
             : 'https://api.openai.com/v1/chat/completions';
         
-        // Updated model names for 2026
-        const apiModel = model || (isGroq ? 'llama-3.1-70b-versatile' : 'gpt-4o-mini');
+        // Try multiple Groq models in case of deprecation
+        const apiModel = model || (isGroq ? 'llama-3.3-70b-versatile' : 'gpt-4o-mini');
 
         const response = await fetch(apiEndpoint, {
             method: 'POST',
