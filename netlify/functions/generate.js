@@ -1,0 +1,53 @@
+exports.handler = async function(event, context) {
+    if (event.httpMethod !== "POST") {
+        return { statusCode: 405, body: "Method Not Allowed" };
+    }
+
+    const API_KEY = process.env.API_KEY;
+
+    if (!API_KEY) {
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ error: { message: "Server misconfigured: API_KEY missing" } })
+        };
+    }
+
+    try {
+        const { prompt, model } = JSON.parse(event.body);
+        
+        const isGroq = API_KEY.startsWith('gsk_');
+        const apiEndpoint = isGroq 
+            ? 'https://api.groq.com/openai/v1/chat/completions' 
+            : 'https://api.openai.com/v1/chat/completions';
+        
+        const apiModel = model || (isGroq ? 'llama3-70b-8192' : 'gpt-3.5-turbo');
+
+        const response = await fetch(apiEndpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${API_KEY}`
+            },
+            body: JSON.stringify({
+                model: apiModel,
+                messages: [
+                    { role: "system", content: "You are an expert web developer. Generate a complete single-page website based on the user's prompt. Output ONLY valid HTML code with embedded Tailwind CSS and no markdown blocks." },
+                    { role: "user", content: prompt }
+                ]
+            })
+        });
+
+        const data = await response.json();
+
+        return {
+            statusCode: 200,
+            body: JSON.stringify(data)
+        };
+
+    } catch (error) {
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ error: { message: error.message } })
+        };
+    }
+};

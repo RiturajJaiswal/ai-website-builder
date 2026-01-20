@@ -1,7 +1,5 @@
 // Application State
 let currentUser = localStorage.getItem('aether_user') || null;
-// ENTER YOUR API KEY HERE (OpenAI 'sk-...' or Groq 'gsk_...')
-const API_KEY = "YOUR_API_KEY_HERE"; 
 let currentView = 'preview';
 
 // Initialize
@@ -84,60 +82,39 @@ async function generateWebsite() {
     try {
         let htmlContent = '';
 
-        if (apiKey && (apiKey.startsWith('sk-') || apiKey.startsWith('gsk_'))) {
-            // --- REAL AI GENERATION PATH (OpenAI & Groq) ---
-            try {
-                const isGroq = apiKey.startsWith('gsk_');
-                const apiEndpoint = isGroq 
-                    ? 'https://api.groq.com/openai/v1/chat/completions' 
-                    : 'https://api.openai.com/v1/chat/completions';
-                
-                const model = isGroq ? 'llama3-70b-8192' : 'gpt-3.5-turbo';
+        // --- NEW NETLIFY FUNCTION PATH ---
+        // We try the serverless function first. If it fails (e.g. running locally without netlify dev),
+        // we fall back to the simulation.
+        try {
+            const response = await fetch('/.netlify/functions/generate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt: prompt })
+            });
 
-                const response = await fetch(apiEndpoint, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${apiKey}`
-                    },
-            API_KEY && (API_KEY.startsWith('sk-') || API_KEY.startsWith('gsk_'))) {
-            // --- REAL AI GENERATION PATH (OpenAI & Groq) ---
-            try {
-                const isGroq = API_KEY.startsWith('gsk_');
-                const apiEndpoint = isGroq 
-                    ? 'https://api.groq.com/openai/v1/chat/completions' 
-                    : 'https://api.openai.com/v1/chat/completions';
-                
-                const model = isGroq ? 'llama3-70b-8192' : 'gpt-3.5-turbo';
+            const data = await response.json();
 
-                const response = await fetch(apiEndpoint, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${API_KEY
-                const data = await response.json();
-                
-                if (data.error) {
-                    throw new Error(data.error.message);
-                }
+            // If the server returns an error (like missing key), throw to go to catch block
+            if (data.error) throw new Error(data.error.message);
+            if (!data.choices) throw new Error("No choices returned from API");
 
-                htmlContent = data.choices[0].message.content;
-                
-                // Cleanup potentially returned markdown
-                htmlContent = htmlContent.replace(/```html/g, '').replace(/```/g, '');
+            htmlContent = data.choices[0].message.content;
+            
+            // Cleanup potentially returned markdown
+            htmlContent = htmlContent.replace(/```html/g, '').replace(/```/g, '');
 
-            } catch (err) {
-                console.error("API Error", err);
-                alert(`API Error: ${err.message}. Falling back to simulation engine.`);
-                htmlContent = generateSimulationTemplate(prompt);
-            }
-
-        } else {
-            // --- SIMULATION PATH (Fallback) ---
-            // Artificial Delay for realism
-            await new Promise(resolve => setTimeout(resolve, 2000));
+        } catch (apiError) {
+            console.warn("Backend API failed, falling back to simulation:", apiError);
+            alert(`Backend API issue: ${apiError.message}. Switching to simulation mode.`);
+            // Fallback to simulation
+            await new Promise(resolve => setTimeout(resolve, 1000));
             htmlContent = generateSimulationTemplate(prompt);
         }
+
+        /* 
+           REMOVED: Old client-side API key logic. 
+           Security is now handled by Netlify Functions.
+        */
 
         // Update UI
         iframe.srcdoc = htmlContent;
