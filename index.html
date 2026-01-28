@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <!-- Load Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
+
 <body>
     <div class="background-orbs">
         <div class="orb orb-1"></div>
@@ -23,7 +25,7 @@
             </div>
             <h1>Welcome to <br> <span class="gradient-text">Aether AI</span></h1>
             <p class="subtitle">Enter your username to access the intelligent web engine.</p>
-            
+
             <div class="input-group">
                 <input type="text" id="usernameInput" placeholder="Enter your username" autocomplete="off">
                 <button onclick="handleLogin()">
@@ -49,11 +51,13 @@
                 <span>Aether AI • Intelligent Web Engine</span>
             </div>
             <h1>Describe it. <br> <span class="gradient-text">Build it.</span></h1>
-            <p class="subtitle">Transform your ideas into reality with our intelligent engine. Just type what you want, and watch the magic happen.</p>
+            <p class="subtitle">Transform your ideas into reality with our intelligent engine. Just type what you want,
+                and watch the magic happen.</p>
         </div>
 
         <div class="input-card fade-in-delay">
-            <textarea id="userPrompt" placeholder="e.g., A landing page for a coffee shop with a minimal dark theme..."></textarea>
+            <textarea id="userPrompt"
+                placeholder="e.g., A landing page for a coffee shop with a minimal dark theme..."></textarea>
             <div class="card-footer">
                 <span class="hint">Press Enter to generate</span>
                 <button id="generateBtn" onclick="generateWebsite()">
@@ -77,15 +81,17 @@
                 </div>
             </div>
             <div class="content-wrapper">
-                <iframe id="previewFrame" title="Website Preview"></iframe>
+                <iframe id="previewFrame" title="Website Preview"
+                    sandbox="allow-scripts allow-same-origin allow-forms allow-modals"></iframe>
                 <div id="codeView" class="hidden">
                     <textarea id="codeArea" readonly></textarea>
                 </div>
             </div>
         </div>
-        
+
         <footer class="fade-in-delay-2">
-            <p>Created by <a href="https://github.com/RiturajJaiswal" target="_blank" class="creator-link">Rituraj Jaiswal</a></p>
+            <p>Created by <a href="https://github.com/RiturajJaiswal" target="_blank" class="creator-link">Rituraj
+                    Jaiswal</a></p>
         </footer>
     </main>
 
@@ -94,4 +100,5 @@
         lucide.createIcons();
     </script>
 </body>
+
 </html>

@@ -10,9 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const loginScreen = document.getElementById('loginScreen');
         if (loginScreen) {
             loginScreen.style.display = 'none';
-        } 
+        }
     }
-    
+
     // Initialize Icons
     if (window.lucide) lucide.createIcons();
 });
@@ -21,7 +21,7 @@ function handleLogin() {
     const usernameInput = document.getElementById('usernameInput');
     const username = usernameInput.value.trim();
     if (!username) return;
-    
+
     // Save User
     currentUser = username;
     localStorage.setItem('aether_user', username);
@@ -29,7 +29,7 @@ function handleLogin() {
     // Transition
     const loginScreen = document.getElementById('loginScreen');
     loginScreen.style.opacity = '0';
-    
+
     setTimeout(() => {
         loginScreen.style.display = 'none';
         showMainApp(username);
@@ -39,11 +39,11 @@ function handleLogin() {
 function showMainApp(username) {
     const mainApp = document.getElementById('mainApp');
     mainApp.classList.remove('hidden');
-    
+
     // Update Greeting
     const nameDisplay = document.getElementById('userNameDisplay');
     const avatar = document.getElementById('userAvatar');
-    
+
     if (nameDisplay) nameDisplay.textContent = username;
     if (avatar) avatar.textContent = username.charAt(0).toUpperCase();
 }
@@ -72,7 +72,7 @@ async function generateWebsite() {
     btn.disabled = true;
     const originalText = btnText.textContent;
     btnText.textContent = "Dreaming...";
-    
+
     // Show Preview Container immediately to indicate activity
     previewContainer.classList.remove('hidden');
     if (window.innerWidth < 768) {
@@ -99,7 +99,7 @@ async function generateWebsite() {
             if (!data.choices) throw new Error("No choices returned from API");
 
             htmlContent = data.choices[0].message.content;
-            
+
             // Cleanup potentially returned markdown
             htmlContent = htmlContent.replace(/```html/g, '').replace(/```/g, '');
 
@@ -119,7 +119,7 @@ async function generateWebsite() {
         // Update UI
         iframe.srcdoc = htmlContent;
         codeArea.value = htmlContent;
-        
+
         // Ensure correct view is visible
         switchView(currentView);
 
@@ -133,9 +133,77 @@ async function generateWebsite() {
     }
 }
 
+function generateFeatures(prompt) {
+    // Generate topic-specific features
+    if (prompt.includes("coffee") || prompt.includes("cafe")) {
+        return [
+            { icon: "fa-mug-hot", title: "Premium Beans", desc: "Ethically sourced coffee beans from the world's finest regions, roasted to perfection daily." },
+            { icon: "fa-leaf", title: "Sustainable Practices", desc: "Committed to environmental responsibility with eco-friendly packaging and fair trade partnerships." },
+            { icon: "fa-heart", title: "Community Hub", desc: "A welcoming space where connections are made over exceptional coffee and warm hospitality." }
+        ];
+    } else if (prompt.includes("tech") || prompt.includes("software") || prompt.includes("app")) {
+        return [
+            { icon: "fa-rocket", title: "Rapid Development", desc: "Agile methodologies and modern frameworks deliver your product faster without compromising quality." },
+            { icon: "fa-shield-halved", title: "Enterprise Security", desc: "Bank-level encryption and compliance standards protect your data and user privacy." },
+            { icon: "fa-chart-line", title: "Scalable Solutions", desc: "Cloud-native architecture that grows with your business, handling millions of users effortlessly." }
+        ];
+    } else if (prompt.includes("restaurant") || prompt.includes("food")) {
+        return [
+            { icon: "fa-utensils", title: "Chef's Specialties", desc: "Signature dishes crafted by award-winning chefs using seasonal, locally-sourced ingredients." },
+            { icon: "fa-wine-glass", title: "Curated Selection", desc: "An extensive wine list and craft cocktails perfectly paired with every menu item." },
+            { icon: "fa-clock", title: "Reservations Made Easy", desc: "Book your table instantly online or call us for special occasions and private events." }
+        ];
+    } else if (prompt.includes("fitness") || prompt.includes("gym")) {
+        return [
+            { icon: "fa-dumbbell", title: "Expert Trainers", desc: "Certified professionals create personalized workout plans tailored to your goals and fitness level." },
+            { icon: "fa-people-group", title: "Group Classes", desc: "Energizing sessions from yoga to HIIT, designed to motivate and challenge every fitness level." },
+            { icon: "fa-trophy", title: "Track Progress", desc: "Advanced metrics and regular assessments keep you motivated and on track to achieve your goals." }
+        ];
+    } else if (prompt.includes("nature") || prompt.includes("green") || prompt.includes("eco")) {
+        return [
+            { icon: "fa-seedling", title: "Conservation Efforts", desc: "Active programs protecting endangered species and preserving critical habitats worldwide." },
+            { icon: "fa-recycle", title: "Zero Waste Initiative", desc: "Comprehensive recycling and composting programs reducing our environmental footprint to zero." },
+            { icon: "fa-users", title: "Community Action", desc: "Join thousands of volunteers making a tangible difference through local and global projects." }
+        ];
+    } else {
+        return [
+            { icon: "fa-wand-magic-sparkles", title: "Intelligent Core", desc: "Powered by advanced algorithms that understand your needs before you even speak them." },
+            { icon: "fa-shield-halved", title: "Unbreakable Security", desc: "Enterprise-grade encryption and privacy protocols protecting your data at every layer." },
+            { icon: "fa-globe", title: "Global Scale", desc: "Deploy instantly to edge networks worldwide for lightning-fast access anywhere." }
+        ];
+    }
+}
+
+function generateDescription(prompt) {
+    // Generate relevant descriptions based on keywords
+    if (prompt.includes("coffee") || prompt.includes("cafe")) {
+        return "Experience the perfect blend of artisanal coffee and cozy ambiance. Our carefully sourced beans and expert baristas create moments worth savoring.";
+    } else if (prompt.includes("tech") || prompt.includes("software") || prompt.includes("app")) {
+        return "Transform your business with cutting-edge technology solutions. We build scalable, innovative software that drives real results.";
+    } else if (prompt.includes("portfolio") || prompt.includes("personal")) {
+        return "Showcasing creative excellence through stunning design and compelling storytelling. Let's bring your vision to life.";
+    } else if (prompt.includes("restaurant") || prompt.includes("food")) {
+        return "Savor exceptional cuisine crafted with passion and the finest ingredients. Every dish tells a story of culinary excellence.";
+    } else if (prompt.includes("fitness") || prompt.includes("gym")) {
+        return "Achieve your fitness goals with expert guidance and state-of-the-art facilities. Your transformation starts here.";
+    } else if (prompt.includes("nature") || prompt.includes("green") || prompt.includes("eco")) {
+        return "Protecting our planet through sustainable practices and environmental awareness. Join us in making a difference for future generations.";
+    } else if (prompt.includes("education") || prompt.includes("learning")) {
+        return "Empowering minds through innovative education and personalized learning experiences. Unlock your full potential.";
+    } else if (prompt.includes("travel") || prompt.includes("tourism")) {
+        return "Discover unforgettable destinations and create memories that last a lifetime. Your next adventure awaits.";
+    } else if (prompt.includes("fashion") || prompt.includes("clothing")) {
+        return "Elevate your style with curated collections that blend timeless elegance with modern trends. Fashion that speaks to you.";
+    } else if (prompt.includes("music") || prompt.includes("audio")) {
+        return "Immerse yourself in exceptional sound quality and discover music that moves you. Where passion meets performance.";
+    } else {
+        return "Discover innovative solutions tailored to your needs. We combine creativity with expertise to deliver exceptional results that exceed expectations.";
+    }
+}
+
 function generateSimulationTemplate(prompt) {
     const safePrompt = prompt.toLowerCase();
-    
+
     // Theme Colors
     let theme = {
         bg: "bg-white",
@@ -240,7 +308,7 @@ function generateSimulationTemplate(prompt) {
                         <span class="block">Imagine.</span>
                         <span class="text-transparent bg-clip-text bg-gradient-to-r ${theme.accentGradient}">Create. Inspire.</span>
                     </h1>
-                    <p class="mt-6 text-xl opacity-80 max-w-lg fade-in-up delay-200 leading-relaxed">${prompt}</p>
+                    <p class="mt-6 text-xl opacity-80 max-w-lg fade-in-up delay-200 leading-relaxed">${generateDescription(safePrompt)}</p>
                     <div class="mt-10 flex flex-col sm:flex-row gap-4 fade-in-up delay-300">
                         <button class="${theme.primary} text-white px-8 py-4 rounded-xl text-lg font-bold flex items-center justify-center gap-2 transition-all hover:scale-105 shadow-xl">
                             Start Journey <i class="fa-solid fa-arrow-right"></i>
@@ -288,32 +356,15 @@ function generateSimulationTemplate(prompt) {
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Feature 1 -->
+                ${generateFeatures(safePrompt).map(feature => `
                 <div class="group p-8 rounded-3xl ${theme.bg === 'bg-white' ? 'bg-gray-50' : 'bg-white/5'} border border-white/10 hover:border-white/20 transition-all hover:-translate-y-2">
                     <div class="w-14 h-14 rounded-2xl bg-gradient-to-br ${theme.accentGradient} flex items-center justify-center text-white text-2xl mb-6 shadow-lg">
-                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        <i class="fa-solid ${feature.icon}"></i>
                     </div>
-                    <h3 class="text-2xl font-bold mb-4">Intelligent Core</h3>
-                    <p class="opacity-70 leading-relaxed">Powered by advanced algorithms that understand your needs before you even speak them.</p>
+                    <h3 class="text-2xl font-bold mb-4">${feature.title}</h3>
+                    <p class="opacity-70 leading-relaxed">${feature.desc}</p>
                 </div>
-
-                <!-- Feature 2 -->
-                 <div class="group p-8 rounded-3xl ${theme.bg === 'bg-white' ? 'bg-gray-50' : 'bg-white/5'} border border-white/10 hover:border-white/20 transition-all hover:-translate-y-2">
-                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br ${theme.accentGradient} flex items-center justify-center text-white text-2xl mb-6 shadow-lg">
-                        <i class="fa-solid fa-shield-halved"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-4">Unbreakable Security</h3>
-                    <p class="opacity-70 leading-relaxed">Enterprise-grade encryption and privacy protocols protecting your data at every layer.</p>
-                </div>
-
-                <!-- Feature 3 -->
-                 <div class="group p-8 rounded-3xl ${theme.bg === 'bg-white' ? 'bg-gray-50' : 'bg-white/5'} border border-white/10 hover:border-white/20 transition-all hover:-translate-y-2">
-                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br ${theme.accentGradient} flex items-center justify-center text-white text-2xl mb-6 shadow-lg">
-                        <i class="fa-solid fa-globe"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-4">Global Scale</h3>
-                    <p class="opacity-70 leading-relaxed">Deploy instantly to edge networks worldwide for lightning-fast access anywhere.</p>
-                </div>
+                `).join('')}
             </div>
         </div>
     </div>
@@ -326,7 +377,7 @@ function switchView(view) {
     const iframe = document.getElementById('previewFrame');
     const codeView = document.getElementById('codeView');
     const bnts = document.querySelectorAll('.view-btn');
-    
+
     // Update state
     currentView = view;
 

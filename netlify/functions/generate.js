@@ -1,4 +1,4 @@
-exports.handler = async function(event, context) {
+exports.handler = async function (event, context) {
     if (event.httpMethod !== "POST") {
         return { statusCode: 405, body: "Method Not Allowed" };
     }
@@ -14,12 +14,12 @@ exports.handler = async function(event, context) {
 
     try {
         const { prompt, model } = JSON.parse(event.body);
-        
+
         const isGroq = API_KEY.startsWith('gsk_');
-        const apiEndpoint = isGroq 
-            ? 'https://api.groq.com/openai/v1/chat/completions' 
+        const apiEndpoint = isGroq
+            ? 'https://api.groq.com/openai/v1/chat/completions'
             : 'https://api.openai.com/v1/chat/completions';
-        
+
         // Try multiple Groq models in case of deprecation
         const apiModel = model || (isGroq ? 'llama-3.3-70b-versatile' : 'gpt-4o-mini');
 
@@ -32,7 +32,7 @@ exports.handler = async function(event, context) {
             body: JSON.stringify({
                 model: apiModel,
                 messages: [
-                    { role: "system", content: "You are an expert web developer. Generate a complete single-page website based on the user's prompt. Output ONLY valid HTML code with embedded Tailwind CSS and no markdown blocks." },
+                    { role: "system", content: "You are an expert web developer. Generate a complete, production-ready single-page website based on the user's prompt. IMPORTANT: Create REAL, RELEVANT content - NO lorem ipsum, NO placeholder text, NO generic descriptions. Write actual compelling copy, features, and descriptions that match the user's topic. Use Tailwind CSS for styling. Output ONLY valid HTML code with no markdown blocks or code fences." },
                     { role: "user", content: prompt }
                 ]
             })
