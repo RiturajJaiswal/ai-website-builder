@@ -204,48 +204,53 @@ function generateDescription(prompt) {
 function generateSimulationTemplate(prompt) {
     const safePrompt = prompt.toLowerCase();
 
-    // Theme Colors
+    // Theme Colors with enhanced visuals
     let theme = {
-        bg: "bg-white",
+        bg: "bg-gradient-to-br from-slate-50 to-blue-50",
         text: "text-gray-900",
-        primary: "bg-blue-600 hover:bg-blue-700",
-        secondary: "bg-gray-100 hover:bg-gray-200 text-gray-900",
+        primary: "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700",
+        secondary: "bg-white/80 backdrop-blur-sm hover:bg-white text-gray-900 border-2 border-blue-200",
         iconColor: "text-blue-500",
-        accentGradient: "from-blue-400 to-purple-600",
-        heroImage: "https://images.unsplash.com/photo-1497215728101-856f4ea42174?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80"
+        accentGradient: "from-blue-400 via-purple-500 to-pink-500",
+        heroImage: "https://images.unsplash.com/photo-1497215728101-856f4ea42174?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80",
+        cardBg: "bg-white/70 backdrop-blur-md"
     };
 
     if (safePrompt.includes("dark")) {
-        theme.bg = "bg-slate-900";
+        theme.bg = "bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900";
         theme.text = "text-white";
-        theme.primary = "bg-indigo-600 hover:bg-indigo-700";
-        theme.secondary = "bg-white/10 hover:bg-white/20 text-white";
+        theme.primary = "bg-gradient-to-r from-indigo-600 to-cyan-600 hover:from-indigo-700 hover:to-cyan-700";
+        theme.secondary = "bg-white/10 backdrop-blur-md hover:bg-white/20 text-white border-2 border-indigo-400/30";
         theme.iconColor = "text-indigo-400";
-        theme.accentGradient = "from-indigo-400 to-cyan-400";
+        theme.accentGradient = "from-indigo-400 via-purple-400 to-cyan-400";
+        theme.cardBg = "bg-white/5 backdrop-blur-xl";
     } else if (safePrompt.includes("coffee") || safePrompt.includes("cafe")) {
-        theme.bg = "bg-[#1c1917]";
-        theme.text = "text-[#e7e5e4]";
-        theme.primary = "bg-[#d97706] hover:bg-[#b45309]";
-        theme.secondary = "bg-[#292524] hover:bg-[#44403c] text-[#d6d3d1]";
-        theme.iconColor = "text-orange-500";
-        theme.accentGradient = "from-orange-400 to-amber-600";
+        theme.bg = "bg-gradient-to-br from-amber-900 via-orange-900 to-stone-900";
+        theme.text = "text-amber-50";
+        theme.primary = "bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700";
+        theme.secondary = "bg-amber-950/50 backdrop-blur-md hover:bg-amber-950/70 text-amber-100 border-2 border-amber-600/30";
+        theme.iconColor = "text-orange-400";
+        theme.accentGradient = "from-orange-400 via-amber-500 to-yellow-500";
         theme.heroImage = "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80";
-    } else if (safePrompt.includes("nature") || safePrompt.includes("green") || safePrompt.includes("species") || safePrompt.includes("animal")) {
-        theme.bg = "bg-emerald-950";
+        theme.cardBg = "bg-amber-950/30 backdrop-blur-xl";
+    } else if (safePrompt.includes("nature") || safePrompt.includes("green") || safePrompt.includes("eco")) {
+        theme.bg = "bg-gradient-to-br from-emerald-950 via-teal-900 to-green-950";
         theme.text = "text-emerald-50";
-        theme.primary = "bg-emerald-500 hover:bg-emerald-600";
-        theme.secondary = "bg-emerald-900/50 hover:bg-emerald-900/70 text-emerald-100";
+        theme.primary = "bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600";
+        theme.secondary = "bg-emerald-950/50 backdrop-blur-md hover:bg-emerald-950/70 text-emerald-100 border-2 border-emerald-500/30";
         theme.iconColor = "text-emerald-400";
-        theme.accentGradient = "from-emerald-400 to-teal-500";
-        theme.heroImage = "https://images.unsplash.com/photo-1500485035595-cbe6f645feb1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80";
-    } else if (safePrompt.includes("future") || safePrompt.includes("tech") || safePrompt.includes("cyber")) {
-        theme.bg = "bg-black";
+        theme.accentGradient = "from-emerald-400 via-teal-400 to-green-400";
+        theme.heroImage = "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80";
+        theme.cardBg = "bg-emerald-950/30 backdrop-blur-xl";
+    } else if (safePrompt.includes("tech") || safePrompt.includes("cyber") || safePrompt.includes("software")) {
+        theme.bg = "bg-gradient-to-br from-black via-purple-950 to-black";
         theme.text = "text-white";
-        theme.primary = "bg-fuchsia-600 hover:bg-fuchsia-700";
-        theme.secondary = "bg-gray-900 border border-gray-800 hover:bg-gray-800";
-        theme.iconColor = "text-fuchsia-500";
-        theme.accentGradient = "from-fuchsia-500 to-cyan-500";
-        theme.heroImage = "https://images.unsplash.com/photo-1535378437327-b7107a770652?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80";
+        theme.primary = "bg-gradient-to-r from-fuchsia-600 to-cyan-600 hover:from-fuchsia-700 hover:to-cyan-700";
+        theme.secondary = "bg-gray-900/50 backdrop-blur-md border-2 border-fuchsia-500/30 hover:bg-gray-800/50 text-white";
+        theme.iconColor = "text-fuchsia-400";
+        theme.accentGradient = "from-fuchsia-500 via-purple-500 to-cyan-500";
+        theme.heroImage = "https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80";
+        theme.cardBg = "bg-gray-900/30 backdrop-blur-xl";
     }
 
     return `<!DOCTYPE html>
@@ -256,81 +261,180 @@ function generateSimulationTemplate(prompt) {
     <title>Generated Website</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .fade-in-up { animation: fadeInUp 0.8s ease-out forwards; opacity: 0; transform: translateY(20px); }
-        .delay-100 { animation-delay: 0.1s; }
-        .delay-200 { animation-delay: 0.2s; }
-        .delay-300 { animation-delay: 0.3s; }
-        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
-        .glass-nav { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.1); }
-        ${safePrompt.includes("future") ? ".cyber-grid { background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px); background-size: 50px 50px; }" : ""}
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        
+        /* Smooth Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .animate-fadeInUp { animation: fadeInUp 0.8s ease-out forwards; }
+        .animate-fadeIn { animation: fadeIn 1s ease-out forwards; }
+        .animate-slideInLeft { animation: slideInLeft 0.8s ease-out forwards; }
+        .animate-slideInRight { animation: slideInRight 0.8s ease-out forwards; }
+        .animate-float { animation: float 3s ease-in-out infinite; }
+        .animate-pulse-slow { animation: pulse 2s ease-in-out infinite; }
+        
+        .delay-100 { animation-delay: 0.1s; opacity: 0; }
+        .delay-200 { animation-delay: 0.2s; opacity: 0; }
+        .delay-300 { animation-delay: 0.3s; opacity: 0; }
+        .delay-400 { animation-delay: 0.4s; opacity: 0; }
+        .delay-500 { animation-delay: 0.5s; opacity: 0; }
+        
+        /* Gradient Animation */
+        .gradient-animate {
+            background-size: 200% 200%;
+            animation: gradientShift 8s ease infinite;
+        }
+        
+        /* Glassmorphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Hover Effects */
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        /* Prevent navigation */
+        a { cursor: pointer; }
     </style>
 </head>
-<body class="${theme.bg} ${theme.text} antialiased ${safePrompt.includes("future") ? "cyber-grid" : ""}">
-    <nav class="fixed w-full z-50 glass-nav transition-all duration-300">
+<body class="${theme.bg} ${theme.text} min-h-screen">
+    <!-- Animated Background Orbs -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br ${theme.accentGradient} rounded-full blur-3xl opacity-20 animate-float"></div>
+        <div class="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-br ${theme.accentGradient} rounded-full blur-3xl opacity-20 animate-float" style="animation-delay: 1s;"></div>
+        <div class="absolute top-1/2 left-1/2 w-96 h-96 bg-gradient-to-br ${theme.accentGradient} rounded-full blur-3xl opacity-10 animate-float" style="animation-delay: 2s;"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 ${theme.cardBg} border-b border-white/10 animate-fadeIn">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
-                <div class="flex items-center gap-2 font-bold text-2xl tracking-tight">
-                   <div class="w-10 h-10 rounded-xl bg-gradient-to-br ${theme.accentGradient} flex items-center justify-center text-white shadow-lg">
-                        <i class="fa-solid fa-bolt"></i>
+                <div class="flex items-center gap-3 font-bold text-2xl tracking-tight">
+                   <div class="w-12 h-12 rounded-2xl bg-gradient-to-br ${theme.accentGradient} flex items-center justify-center text-white shadow-xl shadow-purple-500/50 animate-pulse-slow">
+                        <i class="fa-solid fa-sparkles"></i>
                    </div>
-                   <span class="bg-clip-text text-transparent bg-gradient-to-r ${theme.accentGradient} font-extrabold">Nexus</span>
+                   <span class="bg-clip-text text-transparent bg-gradient-to-r ${theme.accentGradient} font-black">Nexus</span>
                 </div>
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-10 text-sm font-semibold">
-                        <a href="#" class="hover:text-blue-500 transition-colors">Home</a>
-                        <a href="#" class="hover:text-blue-500 transition-colors">Services</a>
-                        <a href="#" class="hover:text-blue-500 transition-colors">About</a>
-                        <a href="#" class="hover:text-blue-500 transition-colors">Contact</a>
-                    </div>
+                <div class="hidden md:flex items-center space-x-8 text-sm font-semibold">
+                    <a href="#" onclick="return false" class="hover:text-purple-400 transition-colors">Home</a>
+                    <a href="#" onclick="return false" class="hover:text-purple-400 transition-colors">Features</a>
+                    <a href="#" onclick="return false" class="hover:text-purple-400 transition-colors">About</a>
+                    <a href="#" onclick="return false" class="hover:text-purple-400 transition-colors">Contact</a>
                 </div>
-                <div>
-                   <button class="${theme.primary} text-white px-6 py-2.5 rounded-full text-sm font-bold transition-all hover:scale-105 shadow-lg shadow-blue-500/25">Get Started</button>
-                </div>
+                <button onclick="return false" class="${theme.primary} text-white px-6 py-3 rounded-full text-sm font-bold transition-all hover:scale-105 shadow-xl shadow-purple-500/30">
+                    Get Started
+                </button>
             </div>
         </div>
     </nav>
+
+    <!-- Hero Section -->
     <div class="relative min-h-screen flex items-center pt-20 overflow-hidden">
+        <!-- Hero Background Image with Overlay -->
         <div class="absolute inset-0 z-0">
-            <img src="${theme.heroImage}" class="w-full h-full object-cover opacity-20" alt="Background">
-            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-${theme.bg.replace("bg-", "")}"></div>
+            <img src="${theme.heroImage}" class="w-full h-full object-cover" alt="Hero Background">
+            <div class="absolute inset-0 bg-gradient-to-br ${theme.bg} opacity-90"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
         </div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-            <div class="grid lg:grid-cols-2 gap-12 items-center">
-                <div class="text-left">
-                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm font-medium mb-8 fade-in-up backdrop-blur-md">
-                        <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
-                        AI-Powered Platform
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full py-20">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <!-- Left Content -->
+                <div class="text-left space-y-8">
+                    <div class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full ${theme.cardBg} border border-white/20 text-sm font-semibold animate-fadeInUp backdrop-blur-md shadow-lg">
+                        <span class="w-2.5 h-2.5 rounded-full bg-green-400 animate-pulse-slow shadow-lg shadow-green-400/50"></span>
+                        AI-Powered Excellence
                     </div>
-                    <h1 class="text-5xl md:text-7xl font-bold tracking-tight mb-8 fade-in-up delay-100 leading-[1.1]">
-                        <span class="block">Imagine.</span>
-                        <span class="text-transparent bg-clip-text bg-gradient-to-r ${theme.accentGradient}">Create. Inspire.</span>
+                    
+                    <h1 class="text-6xl md:text-8xl font-black tracking-tight animate-fadeInUp delay-100 leading-[1.1]">
+                        <span class="block mb-4">Transform</span>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r ${theme.accentGradient} gradient-animate">Your Vision</span>
                     </h1>
-                    <p class="mt-6 text-xl opacity-80 max-w-lg fade-in-up delay-200 leading-relaxed">${generateDescription(safePrompt)}</p>
-                    <div class="mt-10 flex flex-col sm:flex-row gap-4 fade-in-up delay-300">
-                        <button class="${theme.primary} text-white px-8 py-4 rounded-xl text-lg font-bold flex items-center justify-center gap-2 transition-all hover:scale-105 shadow-xl">
-                            Start Journey <i class="fa-solid fa-arrow-right"></i>
+                    
+                    <p class="text-xl md:text-2xl opacity-90 max-w-lg animate-fadeInUp delay-200 leading-relaxed font-medium">
+                        ${generateDescription(safePrompt)}
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 animate-fadeInUp delay-300">
+                        <button onclick="return false" class="${theme.primary} text-white px-10 py-5 rounded-2xl text-lg font-bold flex items-center justify-center gap-3 transition-all hover:scale-105 shadow-2xl shadow-purple-500/50 hover-lift">
+                            Start Your Journey
+                            <i class="fa-solid fa-arrow-right"></i>
                         </button>
-                        <button class="${theme.secondary} px-8 py-4 rounded-xl text-lg font-bold flex items-center justify-center gap-2 transition-all hover:scale-105 backdrop-blur-md border border-white/10">View Demo</button>
+                        <button onclick="return false" class="${theme.secondary} px-10 py-5 rounded-2xl text-lg font-bold flex items-center justify-center gap-3 transition-all hover:scale-105 shadow-xl hover-lift">
+                            <i class="fa-solid fa-play"></i>
+                            Watch Demo
+                        </button>
+                    </div>
+                    
+                    <!-- Trust Indicators -->
+                    <div class="flex items-center gap-8 pt-8 animate-fadeInUp delay-400">
+                        <div class="flex -space-x-3">
+                            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-purple-600 border-4 border-white shadow-lg"></div>
+                            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-400 to-pink-600 border-4 border-white shadow-lg"></div>
+                            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-pink-400 to-red-600 border-4 border-white shadow-lg"></div>
+                        </div>
+                        <div>
+                            <div class="font-bold text-lg">50,000+ Happy Users</div>
+                            <div class="text-sm opacity-70">Join our growing community</div>
+                        </div>
                     </div>
                 </div>
-                <div class="relative fade-in-up delay-300 hidden lg:block">
-                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-r ${theme.accentGradient} rounded-full blur-[100px] opacity-30 animate-pulse"></div>
-                    <div class="relative bg-white/5 border border-white/10 backdrop-blur-xl rounded-2xl p-8 shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500">
-                        <div class="flex items-center gap-4 mb-6">
-                            <div class="w-12 h-12 rounded-full bg-gradient-to-br ${theme.accentGradient}"></div>
-                            <div>
-                                <div class="h-4 w-32 bg-white/20 rounded mb-2"></div>
-                                <div class="h-3 w-20 bg-white/10 rounded"></div>
+                
+                <!-- Right Visual Element -->
+                <div class="relative animate-fadeInUp delay-300 hidden lg:block">
+                    <div class="absolute inset-0 bg-gradient-to-r ${theme.accentGradient} rounded-3xl blur-3xl opacity-30 animate-pulse-slow"></div>
+                    <div class="relative ${theme.cardBg} border border-white/20 rounded-3xl p-10 shadow-2xl hover-lift">
+                        <div class="space-y-6">
+                            <div class="flex items-center gap-4">
+                                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br ${theme.accentGradient} shadow-xl shadow-purple-500/50 animate-pulse-slow"></div>
+                                <div class="flex-1">
+                                    <div class="h-4 bg-white/30 rounded-full mb-2 w-3/4"></div>
+                                    <div class="h-3 bg-white/20 rounded-full w-1/2"></div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="space-y-4">
-                            <div class="h-32 w-full bg-white/5 rounded-xl border border-white/5"></div>
+                            <div class="h-48 bg-gradient-to-br ${theme.accentGradient} rounded-2xl shadow-xl opacity-80"></div>
                             <div class="grid grid-cols-2 gap-4">
-                                <div class="h-20 bg-white/5 rounded-xl"></div>
-                                <div class="h-20 bg-white/5 rounded-xl"></div>
+                                <div class="h-24 bg-white/20 rounded-xl backdrop-blur-sm"></div>
+                                <div class="h-24 bg-white/20 rounded-xl backdrop-blur-sm"></div>
                             </div>
                         </div>
                     </div>
@@ -338,37 +442,88 @@ function generateSimulationTemplate(prompt) {
             </div>
         </div>
     </div>
-    <div class="relative py-20 border-t border-white/5 bg-white/5 backdrop-blur-sm">
+
+    <!-- Stats Section -->
+    <div class="relative py-20 ${theme.cardBg} border-y border-white/10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                <div><div class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r ${theme.accentGradient}">100+</div><div class="text-sm font-medium opacity-60 mt-2">Projects</div></div>
-                <div><div class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r ${theme.accentGradient}">50k</div><div class="text-sm font-medium opacity-60 mt-2">Members</div></div>
-                <div><div class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r ${theme.accentGradient}">99.9%</div><div class="text-sm font-medium opacity-60 mt-2">Uptime</div></div>
-                <div><div class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r ${theme.accentGradient}">24/7</div><div class="text-sm font-medium opacity-60 mt-2">Support</div></div>
+                <div class="animate-fadeInUp delay-100">
+                    <div class="text-5xl md:text-6xl font-black bg-clip-text text-transparent bg-gradient-to-r ${theme.accentGradient} mb-2">500+</div>
+                    <div class="text-sm md:text-base font-semibold opacity-70">Projects Delivered</div>
+                </div>
+                <div class="animate-fadeInUp delay-200">
+                    <div class="text-5xl md:text-6xl font-black bg-clip-text text-transparent bg-gradient-to-r ${theme.accentGradient} mb-2">50k</div>
+                    <div class="text-sm md:text-base font-semibold opacity-70">Active Users</div>
+                </div>
+                <div class="animate-fadeInUp delay-300">
+                    <div class="text-5xl md:text-6xl font-black bg-clip-text text-transparent bg-gradient-to-r ${theme.accentGradient} mb-2">99.9%</div>
+                    <div class="text-sm md:text-base font-semibold opacity-70">Uptime</div>
+                </div>
+                <div class="animate-fadeInUp delay-400">
+                    <div class="text-5xl md:text-6xl font-black bg-clip-text text-transparent bg-gradient-to-r ${theme.accentGradient} mb-2">24/7</div>
+                    <div class="text-sm md:text-base font-semibold opacity-70">Support</div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="py-24 relative">
+
+    <!-- Features Section -->
+    <div class="relative py-32">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-5xl font-bold mb-6">Built for the <span class="text-transparent bg-clip-text bg-gradient-to-r ${theme.accentGradient}">Future</span></h2>
-                <p class="text-xl opacity-60 max-w-2xl mx-auto">Experience the next generation of digital solutions, tailored to your unique vision.</p>
+            <div class="text-center mb-20 animate-fadeInUp">
+                <h2 class="text-5xl md:text-7xl font-black mb-6">
+                    Why Choose <span class="text-transparent bg-clip-text bg-gradient-to-r ${theme.accentGradient}">Us</span>
+                </h2>
+                <p class="text-xl md:text-2xl opacity-70 max-w-3xl mx-auto font-medium">
+                    Experience the perfect blend of innovation, reliability, and excellence
+                </p>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                ${generateFeatures(safePrompt).map(feature => `
-                <div class="group p-8 rounded-3xl ${theme.bg === 'bg-white' ? 'bg-gray-50' : 'bg-white/5'} border border-white/10 hover:border-white/20 transition-all hover:-translate-y-2">
-                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br ${theme.accentGradient} flex items-center justify-center text-white text-2xl mb-6 shadow-lg">
+                ${generateFeatures(safePrompt).map((feature, index) => `
+                <div class="group ${theme.cardBg} border border-white/20 rounded-3xl p-10 hover-lift animate-fadeInUp delay-${(index + 1) * 100}">
+                    <div class="w-20 h-20 rounded-2xl bg-gradient-to-br ${theme.accentGradient} flex items-center justify-center text-white text-3xl mb-8 shadow-2xl shadow-purple-500/50 group-hover:scale-110 transition-transform">
                         <i class="fa-solid ${feature.icon}"></i>
                     </div>
-                    <h3 class="text-2xl font-bold mb-4">${feature.title}</h3>
-                    <p class="opacity-70 leading-relaxed">${feature.desc}</p>
+                    <h3 class="text-2xl md:text-3xl font-bold mb-4">${feature.title}</h3>
+                    <p class="opacity-80 leading-relaxed text-lg">${feature.desc}</p>
                 </div>
                 `).join('')}
             </div>
         </div>
     </div>
-    <footer class="py-12 border-t border-white/10 text-center opacity-60 text-sm"><p>&copy; 2024 Generated with Aether AI. All rights reserved.</p></footer>
+
+    <!-- CTA Section -->
+    <div class="relative py-32 ${theme.cardBg} border-y border-white/10">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="animate-fadeInUp">
+                <h2 class="text-5xl md:text-7xl font-black mb-8">
+                    Ready to <span class="text-transparent bg-clip-text bg-gradient-to-r ${theme.accentGradient}">Get Started?</span>
+                </h2>
+                <p class="text-xl md:text-2xl opacity-80 mb-12 max-w-2xl mx-auto font-medium">
+                    Join thousands of satisfied customers and transform your vision into reality today
+                </p>
+                <div class="flex flex-col sm:flex-row gap-6 justify-center">
+                    <button onclick="return false" class="${theme.primary} text-white px-12 py-6 rounded-2xl text-xl font-bold transition-all hover:scale-105 shadow-2xl shadow-purple-500/50 hover-lift">
+                        Start Free Trial
+                        <i class="fa-solid fa-arrow-right ml-3"></i>
+                    </button>
+                    <button onclick="return false" class="${theme.secondary} px-12 py-6 rounded-2xl text-xl font-bold transition-all hover:scale-105 shadow-xl hover-lift">
+                        Contact Sales
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="relative py-16 border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center opacity-70">
+                <p class="text-lg">&copy; 2024 Generated with Aether AI. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>`;
 }

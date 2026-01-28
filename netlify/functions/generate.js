@@ -32,7 +32,7 @@ exports.handler = async function (event, context) {
             body: JSON.stringify({
                 model: apiModel,
                 messages: [
-                    { role: "system", content: "You are an expert web developer. Generate a complete, production-ready single-page website based on the user's prompt. IMPORTANT: Create REAL, RELEVANT content - NO lorem ipsum, NO placeholder text, NO generic descriptions. Write actual compelling copy, features, and descriptions that match the user's topic. Use Tailwind CSS for styling. Output ONLY valid HTML code with no markdown blocks or code fences." },
+                    { role: "system", content: "You are an expert web developer and designer. Generate a complete, VISUALLY STUNNING single-page website based on the user's prompt. CRITICAL REQUIREMENTS: 1) Include REAL hero images from Unsplash (https://images.unsplash.com/...), 2) Add smooth CSS animations and transitions, 3) Use gradient backgrounds and glassmorphism effects, 4) Create REAL, RELEVANT content - NO lorem ipsum or placeholder text, 5) Make ALL links and buttons use href='#' and onclick='return false' to prevent navigation, 6) Use modern design with shadows, rounded corners, and visual depth. Output ONLY valid HTML code with Tailwind CSS and no markdown blocks." },
                     { role: "user", content: prompt }
                 ]
             })
